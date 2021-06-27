@@ -76,23 +76,25 @@ spec:
         volumeMounts:
         - name: hadoop-config
           mountPath: /tmp/hadoop-config
+      {{- if .Values.persistence.nameNode.enabled }}
+        - name: dfs-nn
+          mountPath: /root/hdfs/namenode
+      {{- else }}
         - name: dfs
           mountPath: /root/hdfs/namenode
+      {{- end }}
       volumes:
       - name: hadoop-config
         configMap:
           name: {{ include "hadoop.fullname" . }}
+      {{- if not .Values.persistence.nameNode.enabled }}
       - name: dfs
-      {{- if .Values.persistence.nameNode.enabled }}
-        persistentVolumeClaim:
-          claimName: {{ include "hadoop.fullname" . }}-hdfs-nn
-      {{- else }}
         emptyDir: {}
       {{- end }}
   {{- if .Values.persistence.nameNode.enabled }}
   volumeClaimTemplates:
   - metadata:
-      name: {{ include "hadoop.fullname" . }}-hdfs-nn
+      name: dfs-nn
     spec:
       accessModes: [ "ReadWriteOnce" ]
       storageClassName:  {{ .Values.persistence.nameNode.storageClass | default "" }}
