@@ -46,6 +46,11 @@ spec:
                   component: hdfs-nn
         {{- end }}
       terminationGracePeriodSeconds: 0
+      serviceAccountName: {{ .Values.hdfs.serviceAccount| default "default" }}
+      {{- with .Values.image.imagePullSecrets }}
+      imagePullSecrets:
+{{ toYaml . | indent 8 }}
+      {{- end }}
       containers:
       - name: hdfs-nn
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"

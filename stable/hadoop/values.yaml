@@ -4,6 +4,8 @@ image:
   repository: danisla/hadoop
   tag: 2.9.0
   pullPolicy: IfNotPresent
+  imagePullSecrets:
+    - name: dockerhub
 
 # The version of the hadoop libraries being used in the image.
 hadoopVersion: 2.9.0
@@ -12,6 +14,7 @@ hadoopVersion: 2.9.0
 antiAffinity: "soft"
 
 hdfs:
+  serviceAccount: "default"
   nameNode:
     pdbMinAvailable: 1
 
