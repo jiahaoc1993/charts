@@ -89,3 +89,14 @@ spec:
       {{- else }}
         emptyDir: {}
       {{- end }}
+  {{- if .Values.persistence.nameNode.enabled }}
+  volumeClaimTemplates:
+  - metadata:
+      name: {{ include "hadoop.fullname" . }}-hdfs-nn
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: "my-storage-class"
+      resources:
+        requests:
+          storage: {{ .Values.persistence.nameNode.size | default "1G"}} 
+  {{- end }}
