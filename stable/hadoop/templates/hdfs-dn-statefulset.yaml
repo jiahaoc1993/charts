@@ -95,8 +95,8 @@ spec:
       name: {{ include "hadoop.fullname" . }}-hdfs-dn
     spec:
       accessModes: [ "ReadWriteOnce" ]
-      storageClassName: "my-storage-class"
+      storageClassName: {{ .Values.persistence.nameNode.storageClass | default "" }}
       resources:
         requests:
-          storage: {{ .Values.persistence.dataNode.size | default "1G"}} 
+          storage: {{ .Values.persistence.dataNode.size | default "1G" }}
   {{- end }}
